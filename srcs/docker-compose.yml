@@ -1,0 +1,17 @@
+version: '1.0'
+
+services:
+  mariadb:
+    build: ./requirements/mariadb/
+    container_name: c_mariadb
+    env_file:
+      - .env
+    volumes:
+      - /home/nmartin/data/mariadb:/var/lib/mysql
+    restart: always
+    networks:
+      - inception
+
+networks:
+  inception:
+    driver: bridge
