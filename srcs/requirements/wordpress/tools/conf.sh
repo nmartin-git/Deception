@@ -1,5 +1,16 @@
 #!/bin/bash
 
+DB_HOST=$(echo "$MYSQL_HOST" | cut -d':' -f1)
+
+echo "Waiting for MariaDB at ${DB_HOST}..."
+
+until mysqladmin ping -h"${DB_HOST}" --silent; do
+    echo "MariaDB not ready, waiting..."
+    sleep 3
+done
+
+echo "MariaDB is ready!"
+
 cd /var/www/html
 
 if [ ! -f wp-config.php ]; then

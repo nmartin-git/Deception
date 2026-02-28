@@ -1,5 +1,3 @@
-version: '1.0'
-
 services:
   mariadb:
     build: ./requirements/mariadb/
@@ -8,9 +6,37 @@ services:
       - .env
     volumes:
       - /home/nmartin/data/mariadb:/var/lib/mysql
-    restart: always
     networks:
       - inception
+    restart: always
+
+  wordpress:
+    build: ./requirements/wordpress/
+    container_name: c_wordpress
+    env_file:
+      - .env
+    volumes:
+      - /home/nmartin/data/wordpress:/var/www/html
+    networks:
+      - inception
+    depends_on:
+      - mariadb
+    restart: always
+
+  nginx:
+    build: ./requirements/nginx/
+    container_name: c_nginx
+    env_file:
+      - .env
+    volumes:
+      - /home/nmartin/data/wordpress:/var/www/html
+    ports:
+      - "443:443"
+    networks:
+      - inception
+    depends_on:
+      - wordpress
+    restart: always
 
 networks:
   inception:
