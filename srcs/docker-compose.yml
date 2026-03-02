@@ -39,6 +39,18 @@ services:
       - redis
     restart: always
 
+  adminer:
+    build: ./requirements/bonus/adminer/
+    image: adminer
+    container_name: c_adminer
+    volumes:
+      - adminer_data:/var/www/adminer
+    networks:
+      - inception
+    depends_on:
+      - mariadb
+    restart: always
+
   nginx:
     build: ./requirements/nginx/
     image: nginx
@@ -47,12 +59,14 @@ services:
       - .env
     volumes:
       - wordpress_data:/var/www/html
+      - adminer_data:/var/www/html
     ports:
       - "443:443"
     networks:
       - inception
     depends_on:
       - wordpress
+      - adminer
     restart: always
 
 networks:
@@ -80,3 +94,10 @@ volumes:
       type: none
       o: bind
       device: /home/nmartin/data/wordpress
+
+  adminer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/nmartin/data/adminer
