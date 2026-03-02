@@ -59,7 +59,8 @@ services:
       - .env
     volumes:
       - wordpress_data:/var/www/html
-      - adminer_data:/var/www/html
+      - adminer_data:/var/www/adminer
+      - static:/var/www/static
     ports:
       - "443:443"
     networks:
@@ -67,6 +68,36 @@ services:
     depends_on:
       - wordpress
       - adminer
+    restart: always
+
+  dozzle:
+    build: ./requirements/bonus/dozzle
+    image: dozzle
+    container_name: c_dozzle
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - inception
+    ports:
+      - "8080:8080"
+    restart: always
+
+  ftp:
+    build: ./requirements/bonus/ftp/
+    image: ftp
+    container_name: c_ftp
+    env_file:
+      - .env
+      - ../secrets/ftp_pwd
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    depends_on:
+      - wordpress
     restart: always
 
 networks:
@@ -101,3 +132,10 @@ volumes:
       type: none
       o: bind
       device: /home/nmartin/data/adminer
+
+  static:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/nmartin/data/static
