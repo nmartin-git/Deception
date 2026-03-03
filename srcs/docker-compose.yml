@@ -70,16 +70,16 @@ services:
       - adminer
     restart: always
 
-  dozzle:
-    build: ./requirements/bonus/dozzle
-    image: dozzle
-    container_name: c_dozzle
+  ctop:
+    build: ./requirements/bonus/ctop
+    image: ctop
+    container_name: c_ctop
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - inception
     ports:
-      - "8080:8080"
+      - "5000:5000"
     restart: always
 
   ftp:
