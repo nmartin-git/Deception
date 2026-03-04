@@ -304,6 +304,7 @@ fastcgi_pass wordpress:9000;     # Not localhost:9000
 
 ## Comparison Table
 
+```table
 | Feature                 | Docker Volumes (Chosen)         | Bind Mounts                     |
 |-------------------------|---------------------------------|---------------------------------|
 | **Management**          | ✅ Docker CLI (`docker volume`) | ⚠️ Manual filesystem            |
@@ -314,3 +315,40 @@ fastcgi_pass wordpress:9000;     # Not localhost:9000
 | **Visibility**          | `docker volume ls`              | Must know host paths            |
 | **Container Isolation** | ✅ Outside container filesystem | ⚠️ Direct host access           |
 | **Windows/Mac**         | ✅ Handles FS differences       | ⚠️ Permission issues            |
+```
+
+## Chosen Approach: Docker Named Volumes
+
+### Why This Choice
+
+✅ **Portability Across Hosts**
+```yaml
+# Works on any host - Docker manages the path
+volumes:
+  wordpress_data:
+    driver: local
+
+# vs Bind Mount - host-specific path
+volumes:
+  - /home/user/wordpress:/var/www/html  # Breaks on different machines
+```
+
+✅ **Docker-Managed Lifecycle**
+```bash
+
+# Easy management
+docker volume ls                    # List all volumes
+docker volume inspect wordpress_data # View details
+docker volume prune                 # Clean unused volumes
+
+# Easy backup
+docker run --rm -v wordpress_data:/data -v $(pwd):/backup \
+  alpine tar czf /backup/wordpress.tar.gz /data
+```
+
+✅ **Subject Requirement**
+
+  -  Inception project mandates Docker volumes
+  -  Learning industry-standard practices
+  -  Better understanding of containerized storage EOF
+
