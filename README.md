@@ -37,21 +37,60 @@ _This project has been created as part of the 42 curriculum by nmartin._
 
 ### Key Features
 
-- ✅ **NGINX** with TLSv1.2/TLSv1.3 on port 443
+- ✅ **NGINX** with TLSv1.3 on port 443
 - ✅ **WordPress** with PHP-FPM
 - ✅ **MariaDB** database
 - ✅ **Redis** caching layer
 - ✅ **FTP Server** for file management
 - ✅ **Adminer** for database administration
-- ✅ **Static Website** (portfolio/CV)
+- ✅ **Static Website** (architecture du projet)
 - ✅ **Container Monitoring** (custom service)
 
 ---
 
 ## 🏗️ Architecture
-
-┌─────────────────────────────────────────────────────────┐ │ Host Machine │ │ ┌───────────────────────────────────────────────────┐ │ │ │ Docker Network (inception) │ │ │ │ │ │ │ │ ┌─────────┐ ┌──────────┐ ┌─────────┐ │ │ │ │ │ NGINX │ │WordPress │ │ MariaDB │ │ │ │ │ │ :443 │→ │ :9000 │→ │ :3306 │ │ │ │ │ └─────────┘ └──────────┘ └─────────┘ │ │ │ │ ↓ ↓ ↓ │ │ │ │ ┌─────────┐ ┌──────────┐ ┌─────────┐ │ │ │ │ │ Redis │ │ Adminer │ │ FTP │ │ │ │ │ │ :6379 │ │ :8080 │ │ :21 │ │ │ │ │ └─────────┘ └──────────┘ └─────────┘ │ │ │ │ │ │ │ │ ┌──────────┐ ┌──────────┐ │ │ │ │ │ Static │ │ Monitor │ │ │ │ │ │ Site │ │ :5000 │ │ │ │ │ └──────────┘ └──────────┘ │ │ │ └───────────────────────────────────────────────────┘ │ │ │ │ Volumes: │ │ - wordpress_data: /var/www/html │ │ - mariadb_data: /var/lib/mysql │ └─────────────────────────────────────────────────────────┘
-
+┌────────────────────────────────────────────────────┐
+│              Host Machine (Debian)                 │
+│                                                    │
+│  ┌────────────────────────────────────────────┐    │
+│  │     Docker Network: inception (bridge)     │    │
+│  │                                            │    │
+│  │   ┌──────────┐   ┌──────────┐              │    │
+│  │   │  NGINX   │   │WordPress │              │    │
+│  │   │  :443    │──▶│  :9000   │              │    │
+│  │   │ (TLSv1.3)│   │ (PHP-FPM)│              │    │
+│  │   └──────────┘   └─────┬────┘              │    │
+│  │        │               │                   │    │
+│  │        │               ▼                   │    │
+│  │        │         ┌──────────┐              │    │
+│  │        │         │ MariaDB  │              │    │
+│  │        │         │  :3306   │              │    │
+│  │        │         │ (MySQL)  │              │    │
+│  │        │         └──────────┘              │    │
+│  │        │                │                  │    │
+│  │        │                │                  │    │
+│  │   ┌────┴─────┬──────────┴───┬─────────┐    │    │
+│  │   │          │              │         │    │    │
+│  │   ▼          ▼              ▼         ▼    │    │
+│  │ ┌─────┐  ┌────────┐  ┌───────┐  ┌─────┐    │    │
+│  │ │Redis│  │Adminer │  │  FTP  │  │Stats│    │    │
+│  │ │:6379│  │ :8080  │  │  :21  │  │:8081│    │    │
+│  │ └─────┘  └────────┘  └───────┘  └─────┘    │    │
+│  │                                            │    │
+│  │              ┌──────────┐                  │    │
+│  │              │ Monitor  │                  │    │
+│  │              │  :5000   │                  │    │
+│  │              └──────────┘                  │    │
+│  └────────────────────────────────────────────┘    │
+│                                                    │
+│  Docker Volumes:                                   │
+│  ├─ wordpress_data  → /var/www/html                │
+│  ├─ mariadb_data    → /var/lib/mysql               │
+│  ├─ redis_data      → /data                        │
+│  ├─ ftp_data        → /home/ftpuser                │
+│  ├─ static_data     → /var/www/html                │
+│  └─ adminer_data    → /var/www/html                │
+└────────────────────────────────────────────────────┘
 
 ---
 
