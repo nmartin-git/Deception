@@ -211,7 +211,7 @@ filezilla
 
 ### 7. Static Website
 - **Base image:** `debian:bookworm`
-- **Role:** Static portfolio/CV website
+- **Role:** Static project presentation
 - **Port:** 8081
 - **Features:** NGINX serving HTML/CSS/JS
 - **Dockerfile:** `srcs/requirements/bonus/static/Dockerfile`
