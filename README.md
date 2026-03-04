@@ -49,7 +49,7 @@ _This project has been created as part of the 42 curriculum by nmartin._
 ---
 
 ## 🏗️ Architecture
-```bash
+```schema
 ┌────────────────────────────────────────────────────┐
 │              Host Machine (Debian)                 │
 │                                                    │
@@ -105,7 +105,7 @@ _This project has been created as part of the 42 curriculum by nmartin._
 - Make
 - OpenSSL (for SSL certificate generation)
 
-### Installation
+### Commands
 
 1. **Clone the repository**
 
@@ -148,3 +148,107 @@ make fclean
 ```bash
 filezilla
 ```
+
+## 📚 Ressources
+
+-  [OpenClassrooms](https://openclassrooms.com/fr/courses/8431896-optimisez-votre-deploiement-en-creant-des-conteneurs-avec-docker)
+-  [DevSecOps](https://blog.stephane-robert.info/docs/conteneurisation/)
+
+---
+
+## 🖥️ Virtual Machines vs Docker
+
+### Comparison Table
+```table
+| Aspect              | Virtual Machines                               | Docker (Chosen)                                 |
+|---------------------|------------------------------------------------|-------------------------------------------------|
+| **Isolation Level** | Complete OS isolation with hypervisor          | Process-level isolation using kernel namespaces |
+| **Resource Usage**  | Heavy (GB of RAM per VM)                       | Lightweight (MB per container)                  |
+| **Startup Time**    | Minutes (full OS boot)                         | Seconds (process start)                         |
+| **Disk Space**      | Large (full OS images)                         | Small (layered filesystem)                      |
+| **Portability**     | Low (hypervisor-dependent)                     | High (runs anywhere with Docker)                |
+| **Performance**     | Overhead from virtualization                   | Near-native performance                         |
+| **Use Case**        | Full OS testing, legacy apps, strong isolation | Microservices, modern apps, CI/CD               |
+| **Scalability**     | Limited by hardware                            | Highly scalable                                 |
+| **Management**      | Complex (OS updates, patching)                 | Simple (container images)                       |
+```
+
+### Why Docker for Inception
+
+✅ **Lightweight Architecture**
+- Run 7+ services on a single machine without heavy resource consumption
+- Each container uses only the resources it needs
+- Shared kernel reduces memory footprint
+
+✅ **Fast Deployment and Iteration**
+- Containers start in seconds vs minutes for VMs
+- Quick rebuild and restart cycles during development
+- Instant rollback to previous versions
+
+✅ **Reproducibility**
+- Same environment across development, testing, and production
+- Dockerfiles ensure consistent builds
+- No "works on my machine" problems
+
+✅ **Microservices Architecture**
+- Each service runs in isolation
+- Independent scaling and updates
+- Clear separation of concerns (NGINX, WordPress, MariaDB)
+
+✅ **Industry Standard**
+- Docker is the de facto standard for containerization
+- Essential skill for modern DevOps and system administration
+- Large ecosystem of tools and community support
+
+✅ **Resource Efficiency**
+- Host machine: 4GB RAM can run all services
+- VM equivalent would need 16GB+ RAM
+- Lower energy consumption and infrastructure costs
+
+### When VMs Would Be Better
+
+❌ **Not Suitable for Inception:**
+- Need complete OS isolation (different kernels)
+- Running untrusted code requiring maximum security
+- Legacy applications requiring specific OS versions
+- Testing different operating systems
+
+### Inception Use Case
+
+Docker is perfect for this project because we're running multiple modern services that share the same kernel, need to communicate efficiently, and benefit from rapid deployment cycles during development.
+
+---
+
+## 🔐 Secrets vs Environment Variables
+
+### Comparison Table
+```table
+| Method                    | Security Level | Visibility                                | Rotation   | Use Case                | Implementation               |
+|---------------------------|----------------|-------------------------------------------|------------|-------------------------|------------------------------|
+| **Environment Variables** | ⚠️ Low         | Visible in `docker inspect`, process list | Manual     | Non-sensitive config    | `.env` file                  |
+| **Docker Secrets**        | ✅ High        | Encrypted at rest, in transit             | API-driven | Passwords, keys, tokens | Docker Swarm/Compose         |
+| **External Vault**        | ✅ Very High   | Never stored in container                 | Automated  | Production secrets      | HashiCorp Vault, AWS Secrets |
+```
+
+### Chosen Approach:
+
+### Environment Variables with `.env` File for non-credentials and `secrets/` Folder for credentials
+
+✅ **Simplicity for Learning Projects**
+- Easy to understand and debug
+- No additional infrastructure required
+- Clear visibility during development
+
+✅ **No Docker Swarm Requirement**
+- Docker Secrets require Swarm mode
+- This is a single-host setup
+- Swarm adds unnecessary complexity for this use case
+
+✅ **Easy Configuration Management**
+- Simple to modify values during development
+- No need to redeploy secrets
+- Quick testing of different configurations
+
+✅ **Security enforcment**
+ -  Splitted sensitive contents
+ -  Separation between credentials and non-credentials informations 
