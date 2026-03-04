@@ -9,8 +9,8 @@ _This project has been created as part of the 42 curriculum by nmartin._
 - [Architecture](#architecture)
 - [Instructions](#instructions)
   - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Usage](#usage)
+  - [Installation & Usage](#commands)
+- [Resources](#resources)
 - [Services](#services)
 - [Technical Choices](#technical-choices)
   - [Virtual Machines vs Docker](#virtual-machines-vs-docker)
@@ -18,7 +18,6 @@ _This project has been created as part of the 42 curriculum by nmartin._
   - [Docker Network vs Host Network](#docker-network-vs-host-network)
   - [Docker Volumes vs Bind Mounts](#docker-volumes-vs-bind-mounts)
 - [Project Structure](#project-structure)
-- [Resources](#resources)
 - [AI Usage](#ai-usage)
 
 ---
