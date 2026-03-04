@@ -49,6 +49,7 @@ _This project has been created as part of the 42 curriculum by nmartin._
 ---
 
 ## 🏗️ Architecture
+```bash
 ┌────────────────────────────────────────────────────┐
 │              Host Machine (Debian)                 │
 │                                                    │
@@ -91,7 +92,7 @@ _This project has been created as part of the 42 curriculum by nmartin._
 │  ├─ static_data     → /var/www/html                │
 │  └─ adminer_data    → /var/www/html                │
 └────────────────────────────────────────────────────┘
-
+```
 ---
 
 ## 🚀 Instructions
