@@ -1,20 +1,21 @@
 FROM debian:bookworm
 
-RUN apt-get update && \
-    apt-get install -y wget ca-certificates python3 python3-pip && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y wget ca-certificates python3 python3-pip curl \
+    && rm -rf /var/lib/apt/lists/*
 
-Installer ctop
-RUN wget https://github.com/bcicen/ctop/releases/download/v0.7.7/ctop-0.7.7-linux-amd64 \
-    -O /usr/local/bin/ctop && \
-    chmod +x /usr/local/bin/ctop
+RUN curl -fsSL https://get.docker.com -o get-docker.sh \
+    && sh get-docker.sh \
+    && rm get-docker.sh
 
-Wrapper web simple
 RUN pip3 install --break-system-packages flask
 
-COPY conf/wrapper.py /app/wrapper.py
+RUN wget https://github.com/bcicen/ctop/releases/download/v0.7.7/ctop-0.7.7-linux-amd64 \
+    -O /usr/local/bin/ctop \
+    && chmod +x /usr/local/bin/ctop
 
 WORKDIR /app
+
+COPY conf/wrapper.py /app/wrapper.py
 
 EXPOSE 5000
 
