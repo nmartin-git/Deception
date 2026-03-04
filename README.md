@@ -250,4 +250,40 @@ Docker is perfect for this project because we're running multiple modern service
 
 ✅ **Security enforcment**
  -  Splitted sensitive contents
- -  Separation between credentials and non-credentials informations 
+ -  Separation between credentials and non-credentials informations
+
+# Docker Network vs Host Network
+
+## Comparison Table 
+
+```table
+| Mode                | Isolation         | DNS Resolution  | Port Conflicts        | Performance      | Security | Use Case             |
+|---------------------|-------------------|-----------------|-----------------------|------------------|----------|----------------------|
+| **Bridge Network**  | ✅ Full isolation | ✅ Built-in DNS | ❌ No conflicts       | Slight overhead  | ✅ High  | Multi-container apps |
+| **Host Network**    | ❌ Shares host    | ❌ Manual IP    | ✅ Possible conflicts | Fastest          | ⚠️ Lower | Single container     |
+| **Overlay Network** | ✅ Multi-host     | ✅ Built-in DNS | ❌ No conflicts       | Network overhead | ✅ High  | Swarm/Kubernetes     |
+```
+
+## Chosen Approach: Docker Bridge Network (`inception`)
+
+### Why This Choice
+
+✅ **Container Isolation**
+- Containers can't access host services directly
+- Network namespace isolation prevents interference
+- Only exposed ports are accessible from outside
+- Internal services (MariaDB) completely hidden from host
+
+✅ **Built-in DNS Resolution**
+- Containers communicate by service name
+- No need for IP address management
+- Automatic service discovery
+
+**Example:**
+```yaml
+# WordPress connects to MariaDB by name
+WORDPRESS_DB_HOST=mariadb:3306  # Not 172.18.0.3:3306
+
+# NGINX proxies to WordPress by name
+fastcgi_pass wordpress:9000;     # Not localhost:9000
+```
