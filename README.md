@@ -322,9 +322,9 @@ Docker is perfect for this project because we're running multiple modern service
  -  Splitted sensitive contents
  -  Separation between credentials and non-credentials informations
 
-# Docker Network vs Host Network
+## Docker Network vs Host Network
 
-## Comparison Table 
+### Comparison Table 
 
 ```table
 | Mode                | Isolation         | DNS Resolution  | Port Conflicts        | Performance      | Security | Use Case             |
@@ -334,7 +334,7 @@ Docker is perfect for this project because we're running multiple modern service
 | **Overlay Network** | ✅ Multi-host     | ✅ Built-in DNS | ❌ No conflicts       | Network overhead | ✅ High  | Swarm/Kubernetes     |
 ```
 
-## Chosen Approach: Docker Bridge Network (`inception`)
+### Chosen Approach: Docker Bridge Network (`inception`)
 
 ### Why This Choice
 
