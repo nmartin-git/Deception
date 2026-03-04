@@ -145,7 +145,7 @@ make fclean
 filezilla
 ```
 
-## 📚 Ressources
+## 📚 Resources
 
 ### Guides & Documentation
 -  [OpenClassrooms](https://openclassrooms.com/fr/courses/8431896-optimisez-votre-deploiement-en-creant-des-conteneurs-avec-docker)
