@@ -304,23 +304,12 @@ Docker is perfect for this project because we're running multiple modern service
 ### Environment Variables with `.env` File for non-credentials and `secrets/` Folder for credentials
 
 ✅ **Simplicity for Learning Projects**
-- Easy to understand and debug
-- No additional infrastructure required
-- Clear visibility during development
 
 ✅ **No Docker Swarm Requirement**
-- Docker Secrets require Swarm mode
-- This is a single-host setup
-- Swarm adds unnecessary complexity for this use case
 
 ✅ **Easy Configuration Management**
-- Simple to modify values during development
-- No need to redeploy secrets
-- Quick testing of different configurations
 
 ✅ **Security enforcment**
- -  Splitted sensitive contents
- -  Separation between credentials and non-credentials informations
 
 ## Docker Network vs Host Network
 
@@ -339,15 +328,8 @@ Docker is perfect for this project because we're running multiple modern service
 ### Why This Choice
 
 ✅ **Container Isolation**
-- Containers can't access host services directly
-- Network namespace isolation prevents interference
-- Only exposed ports are accessible from outside
-- Internal services (MariaDB) completely hidden from host
 
 ✅ **Built-in DNS Resolution**
-- Containers communicate by service name
-- No need for IP address management
-- Automatic service discovery
 
 **Example:**
 ```yaml
@@ -359,16 +341,8 @@ fastcgi_pass wordpress:9000;     # Not localhost:9000
 ```
 
 ✅ **Security Benefits**
- -  Default deny: containers can't reach each other unless connected
- -  Explicit network membership required
- -  Easy firewall rules at network level
- -  Reduced attack surface
 
 ✅ **Flexibility and Scalability**
- -  Easy to add/remove services without affecting host
- -  Multiple isolated networks possible
- -  Service-to-service communication without port mapping
- -  Simple to replicate on different hosts EOF
 
 ## Docker Volumes vs Bind Mounts
 
@@ -417,8 +391,4 @@ docker run --rm -v wordpress_data:/data -v $(pwd):/backup \
 ```
 
 ✅ **Subject Requirement**
-
-  -  Inception project mandates Docker volumes
-  -  Learning industry-standard practices
-  -  Better understanding of containerized storage EOF
 
