@@ -287,3 +287,30 @@ WORDPRESS_DB_HOST=mariadb:3306  # Not 172.18.0.3:3306
 # NGINX proxies to WordPress by name
 fastcgi_pass wordpress:9000;     # Not localhost:9000
 ```
+
+✅ **Security Benefits**
+ -  Default deny: containers can't reach each other unless connected
+ -  Explicit network membership required
+ -  Easy firewall rules at network level
+ -  Reduced attack surface
+
+✅ **Flexibility and Scalability**
+ -  Easy to add/remove services without affecting host
+ -  Multiple isolated networks possible
+ -  Service-to-service communication without port mapping
+ -  Simple to replicate on different hosts EOF
+
+# Docker Volumes vs Bind Mounts
+
+## Comparison Table
+
+| Feature                 | Docker Volumes (Chosen)         | Bind Mounts                     |
+|-------------------------|---------------------------------|---------------------------------|
+| **Management**          | ✅ Docker CLI (`docker volume`) | ⚠️ Manual filesystem            |
+| **Portability**         | ✅ Platform-independent paths   | ❌ Host-specific absolute paths |
+| **Backup**              | ✅ `docker volume backup`       | ⚠️ Manual tar/rsync             |
+| **Performance**         | ✅ Optimized by Docker          | Depends on host FS              |
+| **Permissions**         | ✅ Docker-managed               | ⚠️ Manual chmod/chown           |
+| **Visibility**          | `docker volume ls`              | Must know host paths            |
+| **Container Isolation** | ✅ Outside container filesystem | ⚠️ Direct host access           |
+| **Windows/Mac**         | ✅ Handles FS differences       | ⚠️ Permission issues            |
