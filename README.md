@@ -12,13 +12,10 @@ _This project has been created as part of the 42 curriculum by nmartin._
   - [Installation & Usage](#commands)
 - [Resources](#resources)
 - [Services](#services)
-- [Technical Choices](#technical-choices)
-  - [Virtual Machines vs Docker](#virtual-machines-vs-docker)
-  - [Secrets vs Environment Variables](#secrets-vs-environment-variables)
-  - [Docker Network vs Host Network](#docker-network-vs-host-network)
-  - [Docker Volumes vs Bind Mounts](#docker-volumes-vs-bind-mounts)
-- [Project Structure](#project-structure)
-- [AI Usage](#ai-usage)
+- [Virtual Machines vs Docker](#virtual-machines-vs-docker)
+- [Secrets vs Environment Variables](#secrets-vs-environment-variables)
+- [Docker Network vs Host Network](#docker-network-vs-host-network)
+- [Docker Volumes vs Bind Mounts](#docker-volumes-vs-bind-mounts)
 
 ---
 
@@ -150,8 +147,81 @@ filezilla
 
 ## 📚 Ressources
 
+### Guides & Documentation
 -  [OpenClassrooms](https://openclassrooms.com/fr/courses/8431896-optimisez-votre-deploiement-en-creant-des-conteneurs-avec-docker)
 -  [DevSecOps](https://blog.stephane-robert.info/docs/conteneurisation/)
+
+### IA
+ -  Github Copilot (Claude sonnet 4.5)
+    -  Set a project roadmap
+    -  Assistance to elaborate Dockerfiles and Scripts
+    -  Explaining project's concepts
+
+---
+
+---
+
+## Services
+
+### 1. NGINX
+- **Base image:** `debian:bookworm`
+- **Role:** Reverse proxy and TLS termination
+- **Port:** 443 (HTTPS)
+- **Features:** TLSv1.2/TLSv1.3, SSL certificate, proxies to WordPress
+- **Dockerfile:** `srcs/requirements/nginx/Dockerfile`
+
+### 2. WordPress + PHP-FPM
+- **Base image:** `debian:bookworm`
+- **Role:** Content Management System
+- **Port:** 9000 (PHP-FPM, internal)
+- **Features:** PHP 8.2, WordPress CLI, Redis cache integration
+- **Dockerfile:** `srcs/requirements/wordpress/Dockerfile`
+
+### 3. MariaDB
+- **Base image:** `debian:bookworm`
+- **Role:** Relational database
+- **Port:** 3306 (internal)
+- **Features:** MySQL 10.11, persistent storage, automated setup
+- **Dockerfile:** `srcs/requirements/mariadb/Dockerfile`
+
+---
+
+## Bonus Services
+
+### 4. Redis
+- **Base image:** `debian:bookworm`
+- **Role:** Object caching for WordPress
+- **Port:** 6379 (internal)
+- **Features:** In-memory cache, improves performance by 40-60%
+- **Dockerfile:** `srcs/requirements/bonus/redis/Dockerfile`
+
+### 5. FTP Server (vsftpd)
+- **Base image:** `debian:bookworm`
+- **Role:** File transfer protocol server
+- **Port:** 21
+- **Features:** Upload files to WordPress, user authentication
+- **Dockerfile:** `srcs/requirements/bonus/ftp/Dockerfile`
+
+### 6. Adminer
+- **Base image:** `debian:bookworm`
+- **Role:** Web-based database management
+- **Port:** 8080
+- **Features:** Lightweight phpMyAdmin alternative, SQL queries
+- **Dockerfile:** `srcs/requirements/bonus/adminer/Dockerfile`
+
+### 7. Static Website
+- **Base image:** `debian:bookworm`
+- **Role:** Static portfolio/CV website
+- **Port:** 8081
+- **Features:** NGINX serving HTML/CSS/JS
+- **Dockerfile:** `srcs/requirements/bonus/static/Dockerfile`
+
+### 8. Container Monitor (ctop)
+- **Base image:** `debian:bookworm`
+- **Role:** Real-time container monitoring
+- **Port:** 5000
+- **Features:** Web dashboard, live logs, container status
+- **Dockerfile:** `srcs/requirements/bonus/ctop/Dockerfile`
 
 ---
 
@@ -300,9 +370,9 @@ fastcgi_pass wordpress:9000;     # Not localhost:9000
  -  Service-to-service communication without port mapping
  -  Simple to replicate on different hosts EOF
 
-# Docker Volumes vs Bind Mounts
+## Docker Volumes vs Bind Mounts
 
-## Comparison Table
+### Comparison Table
 
 ```table
 | Feature                 | Docker Volumes (Chosen)         | Bind Mounts                     |
@@ -317,7 +387,7 @@ fastcgi_pass wordpress:9000;     # Not localhost:9000
 | **Windows/Mac**         | ✅ Handles FS differences       | ⚠️ Permission issues            |
 ```
 
-## Chosen Approach: Docker Named Volumes
+### Chosen Approach: Docker Named Volumes
 
 ### Why This Choice
 
