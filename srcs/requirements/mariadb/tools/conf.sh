@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# exit on error
 set -e
 
 echo "=== MariaDB Initialization ==="
